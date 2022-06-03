@@ -9,6 +9,10 @@ router.get('/', postsController.getAllComments);
 // Retorna comentário especifico
 router.get('/:id', postsController.getComment);
 
+// PUT REQUESTS
+// Atualiza comentário
+router.put('/:id', postsController.updateComment);
+
 // DELETE REQUESTS
 // Apaga comentário
 router.delete('/:id', postsController.deleteComment);

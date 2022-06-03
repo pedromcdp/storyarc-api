@@ -207,3 +207,24 @@ exports.updatePost = async (req, res) => {
     res.status(400).json({ success: false, message: erro.message });
   }
 };
+
+// Atualiza um Comentário especifico
+exports.updateComment = async (req, res) => {
+  const update = req.body;
+  try {
+    const updatedComment = await Comment.findByIdAndUpdate(
+      req.params.id,
+      update,
+      {
+        new: true,
+      },
+    );
+    res.status(200).json({
+      success: true,
+      message: 'Comment Updated',
+      content: updatedComment,
+    });
+  } catch (erro) {
+    res.status(400).json({ success: false, message: erro.message });
+  }
+};
