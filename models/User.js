@@ -22,6 +22,11 @@ const UserSchema = mongoose.Schema(
         { type: mongoose.SchemaTypes.ObjectId, ref: 'Posts', default: null },
       ],
     },
+    likedPosts: {
+      type: [
+        { type: mongoose.SchemaTypes.ObjectId, ref: 'Posts', default: null },
+      ],
+    },
   },
   { timestamps: true },
 );
