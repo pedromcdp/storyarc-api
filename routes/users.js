@@ -2,29 +2,31 @@
 const router = require('express').Router();
 // Controllers
 const userController = require('../controllers/usersController');
+// Middlewares
+const authCheck = require('../middlewares/authCheck');
 
 // GET REQUESTS
 // Retorna todos os users
-router.get('/', userController.getAllUsers);
+router.get('/', authCheck, userController.getAllUsers);
 // Retorna user especifico
-router.get('/:id', userController.getUser);
+router.get('/:id', authCheck, userController.getUser);
 // Retorna todos os Posts de um user
-router.get('/:id/posts', userController.getUserPosts);
+router.get('/:id/posts', authCheck, userController.getUserPosts);
 // Retorna Posts guardados do user
-router.get('/:id/savedPosts', userController.getUserSavedPosts);
+router.get('/:id/savedPosts', authCheck, userController.getUserSavedPosts);
 
 // POST REQUESTS
 // Adiciona um novo utilizador
 router.post('/addUser', userController.createUser);
 // Adiciona post aos savedPosts do user
-router.post('/:id/addSavedPost', userController.addPostToSavedPosts);
+router.post('/:id/addSavedPost', authCheck, userController.addPostToSavedPosts);
 
 // DELETE REQUESTS
 // Apaga um utilizador
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', authCheck, userController.deleteUser);
 
 // PUT REQUESTS
 // Atualiza um utilizador
-router.put('/:id', userController.updateUser)
+router.put('/:id', authCheck, userController.updateUser);
 
 module.exports = router;

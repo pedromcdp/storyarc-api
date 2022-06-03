@@ -3,7 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const authCheck = require('./middlewares/authCheck');
 const api = require('./controllers/apiController');
 const errorHandling = require('./controllers/errorHandling');
 
@@ -29,7 +28,7 @@ app.get('/', api.welcome);
 
 // Routes Middleware
 app.use('/posts', postsRoute);
-app.use('/users', authCheck, usersRoute);
+app.use('/users', usersRoute);
 app.use('/comments', commentsRoute);
 
 // Middleware if there's no matched endpoint
