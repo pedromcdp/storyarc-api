@@ -4,7 +4,6 @@ const PostSchema = mongoose.Schema(
   {
     postType: {
       type: String,
-      required: true,
       default: 'foto',
     },
     description: {
