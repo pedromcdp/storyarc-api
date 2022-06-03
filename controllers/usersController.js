@@ -110,18 +110,6 @@ exports.deleteUser = async (req, res) => {
 //PUT REQUESTS
 //Update user
 exports.updateUser = async (req, res) => {
-  // const update = req.body;
-  // try {
-  //   const updatedUser = await User.findByIdAndUpdate(req.params.id, update, {
-  //     new: true,
-  //   });
-  //   res
-  //     .status(200)
-  //     .json({ success: true, message: 'User Updated', content: updatedUser });
-  // } catch (erro) {
-  //   res.status(400).json({ success: false, message: erro.message });
-  // }
-  // update user by id mongoose
   try {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
