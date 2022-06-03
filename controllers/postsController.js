@@ -173,7 +173,7 @@ exports.addComment = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
-    await Comment.findByIdAndDelete({ postId: req.params.id });
+    await Comment.deleteMany({ postId: req.params.id });
     res
       .status(200)
       .json({ success: true, message: 'Post & Comments deleted successfully' });
