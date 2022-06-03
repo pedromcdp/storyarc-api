@@ -91,7 +91,7 @@ exports.getPost = async (req, res) => {
 exports.getPostComments = async (req, res) => {
   try {
     const comments = await Comment.find()
-      .select('user body')
+      .select('user body createdAt')
       .populate({ path: 'user', select: 'name avatar' })
       .where('postId')
       .equals(req.params.id);
