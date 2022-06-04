@@ -96,6 +96,36 @@ exports.addPostToSavedPosts = async (req, res) => {
   }
 };
 
+// like a post
+exports.likePost = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const post = await Post.findById(req.body.postId);
+    user.likedPosts.push(req.body.postId);
+    post.likes.push(req.params.id);
+    await user.save();
+    await post.save();
+    res.status(200).json({ success: true, message: 'Post liked' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// dislike a post
+exports.dislikePost = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const post = await Post.findById(req.body.postId);
+    user.likedPosts.pull(req.body.postId);
+    post.likes.pull(req.params.id);
+    await user.save();
+    await post.save();
+    res.status(200).json({ success: true, message: 'Post disliked' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // DELETE REQUESTS
 // Apaga um utilizador
 exports.deleteUser = async (req, res) => {

@@ -20,10 +20,14 @@ router.get('/:id/savedPosts', authCheck, userController.getUserSavedPosts);
 router.post('/addUser', userController.createUser);
 // Adiciona post aos savedPosts do user
 router.post('/:id/addSavedPost', authCheck, userController.addPostToSavedPosts);
+// Gostar de uma publicação
+router.post('/:id/like', authCheck, userController.likePost);
 
 // DELETE REQUESTS
 // Apaga um utilizador
 router.delete('/:id', authCheck, userController.deleteUser);
+// Tira like de uma publicação
+router.delete('/:id/dislike', authCheck, userController.dislikePost);
 
 // PUT REQUESTS
 // Atualiza um utilizador
