@@ -101,7 +101,7 @@ exports.likePost = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const post = await Post.findById(req.body.postId);
-    user.likedPosts.push(req.body.postId);
+    user.likedPosts.push(toId(req.body.postId));
     post.likes.push(req.params.id);
     await user.save();
     await post.save();

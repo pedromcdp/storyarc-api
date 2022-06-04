@@ -38,7 +38,7 @@ const PostSchema = mongoose.Schema(
     },
     likes: {
       type: [
-        { type: mongoose.SchemaTypes.ObjectId, ref: 'Users', default: null },
+        { type: mongoose.SchemaTypes.String, ref: 'Users', default: null },
       ],
     },
   },
