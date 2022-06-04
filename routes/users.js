@@ -7,7 +7,7 @@ const authCheck = require('../middlewares/authCheck');
 
 // GET REQUESTS
 // Retorna todos os users
-router.get('/', authCheck, userController.getAllUsers);
+router.get('/getUsers', authCheck, userController.getAllUsers);
 // Retorna user especifico
 router.get('/:id', authCheck, userController.getUser);
 // Retorna todos os Posts de um user
@@ -28,5 +28,7 @@ router.delete('/:id', authCheck, userController.deleteUser);
 // PUT REQUESTS
 // Atualiza um utilizador
 router.put('/:id', authCheck, userController.updateUser);
+// Cria ou atualiza um utilizador
+router.put('/', userController.createOrUpdateUser);
 
 module.exports = router;

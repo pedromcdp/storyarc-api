@@ -121,3 +121,28 @@ exports.updateUser = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+// Create or update user
+exports.createOrUpdateUser = async (req, res) => {
+  const userId = req.body.id;
+  try {
+    const user = await User.findById(userId);
+    if (user) {
+      await User.findByIdAndUpdate(userId, req.body, { new: true });
+      res.status(200).json({ success: true, message: 'User updated' });
+    } else {
+      const user = new User({
+        _id: userId,
+        name: req.body.name,
+        email: req.body.email,
+        avatar: req.body.avatar,
+      });
+      const createUser = await user.save();
+      res
+        .status(201)
+        .json({ success: true, message: 'User created', data: createUser });
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
