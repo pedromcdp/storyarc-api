@@ -62,6 +62,21 @@ exports.getUserSavedPosts = async (req, res) => {
   }
 };
 
+// get user liked posts
+exports.getUserLikedPosts = async (req, res) => {
+  try {
+    const userLikedPosts = await User.findById(req.params.id)
+      .select('likedPosts')
+      .populate({
+        path: 'likedPosts',
+        populate: { path: 'user', select: 'name avatar' },
+      });
+    res.status(200).json(userLikedPosts);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // POST Exports
 // Adiciona um novo utilizador
 exports.createUser = async (req, res) => {
@@ -91,6 +106,20 @@ exports.addPostToSavedPosts = async (req, res) => {
     res
       .status(200)
       .json({ success: true, message: 'Post added to savedPosts' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// remove post from users savedposts
+exports.removePostFromSavedPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    user.savedPosts.pull(req.body.postId);
+    await user.save();
+    res
+      .status(200)
+      .json({ success: true, message: 'Post removed from savedPosts' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

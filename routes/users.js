@@ -14,6 +14,8 @@ router.get('/:id', authCheck, userController.getUser);
 router.get('/:id/posts', authCheck, userController.getUserPosts);
 // Retorna Posts guardados do user
 router.get('/:id/savedPosts', authCheck, userController.getUserSavedPosts);
+// Retorna Posts que o user gostou
+router.get('/:id/likedPosts', authCheck, userController.getUserLikedPosts);
 
 // POST REQUESTS
 // Adiciona um novo utilizador
