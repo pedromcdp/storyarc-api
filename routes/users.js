@@ -22,6 +22,12 @@ router.get('/:id/likedPosts', authCheck, userController.getUserLikedPosts);
 router.post('/addUser', userController.createUser);
 // Adiciona post aos savedPosts do user
 router.post('/:id/addSavedPost', authCheck, userController.addPostToSavedPosts);
+// Remove post dos savedPosts do user
+router.post(
+  '/:id/removeSavedPost',
+  authCheck,
+  userController.removePostFromSavedPosts,
+);
 // Gostar de uma publicação
 router.post('/:id/like', authCheck, userController.likePost);
 // Tira like de uma publicação
