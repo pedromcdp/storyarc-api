@@ -7,7 +7,13 @@ const authCheck = async (req, res, next) => {
     req.user = decodedToken;
     next();
   } catch (error) {
-    res.status(401).send('Unauthorized');
+    res.status(401).json({
+      error: {
+        code: 'forbidden',
+        message: 'The request is missing a valid authorization token.',
+        missingToken: true,
+      },
+    });
   }
 };
 
