@@ -185,8 +185,11 @@ exports.deletePost = async (req, res) => {
 // Apaga comentário
 exports.deleteComment = async (req, res) => {
   try {
+    const post = await Post.findById(req.body.postId);
+    post.comments.pull(req.params.id);
+    await post.save();
     await Comment.findByIdAndDelete(req.params.id);
-    res.status(200).json({ success: true, message: 'Comment deleted' });
+    res.status(200).json({ success: true, message: 'Comment Deleted' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

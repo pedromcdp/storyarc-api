@@ -13,8 +13,8 @@ router.get('/:id', postsController.getComment);
 // Atualiza comentário
 router.put('/:id', postsController.updateComment);
 
-// DELETE REQUESTS
+// Post REQUESTS
 // Apaga comentário
-router.delete('/:id', postsController.deleteComment);
+router.post('/:id', postsController.deleteComment);
 
 module.exports = router;
