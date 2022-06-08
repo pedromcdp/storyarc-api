@@ -182,11 +182,10 @@ exports.deletePost = async (req, res) => {
   }
 };
 
-// Apaga comentário especifico e remove-o do post
+// Apaga comentário
 exports.deleteComment = async (req, res) => {
   try {
     await Comment.findByIdAndDelete(req.params.id);
-    await Post.comments.pull(req.params.id);
     res.status(200).json({ success: true, message: 'Comment deleted' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
