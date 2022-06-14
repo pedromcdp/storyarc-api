@@ -10,6 +10,8 @@ router.get('/', postsController.getAllPosts);
 router.get('/latest', postsController.getLatestPosts);
 // Retorna post com mais comentários
 router.get('/trending', postsController.getTrendingPosts);
+// Retorna posts da pesquisa
+router.get('/search', postsController.searchPosts);
 // Retorna um post especifico
 router.get('/:id', postsController.getPost);
 // Retorna comentarios de um post

@@ -56,8 +56,32 @@ exports.getTrendingPosts = async (req, res) => {
   try {
     const posts = await Post.find()
       .sort({ comments: -1 })
+      .sort({ updatedAt: -1 })
       .populate('user', 'name avatar')
+      .skip(page * postPerPage)
+      .limit(postPerPage);
+    res
+      .status(200)
+      .json({ success: true, results: posts.length, page: page, data: posts });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// get all posts that where description matches search term
+exports.searchPosts = async (req, res) => {
+  const { q } = req.query;
+  const page = req.query.p || 0;
+  const postPerPage = 3;
+  try {
+    const posts = await Post.find({
+      $or: [
+        { description: { $regex: q, $options: 'i' } },
+        { streetName: { $regex: q, $options: 'i' } },
+      ],
+    })
       .sort({ createdAt: -1 })
+      .populate('user', 'name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
     res
