@@ -25,7 +25,7 @@ const PostSchema = mongoose.Schema(
       type: Array,
     },
     contentDate: {
-      type: Number,
+      type: String,
     },
     user: {
       type: mongoose.SchemaTypes.String,
