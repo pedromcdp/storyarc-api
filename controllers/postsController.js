@@ -22,9 +22,12 @@ exports.getAllPosts = async (req, res) => {
       })
       .skip(page * postPerPage)
       .limit(postPerPage);
-    res
-      .status(200)
-      .json({ success: true, results: posts.length, page: page, data: posts });
+    res.status(200).json({
+      success: true,
+      results: posts.length,
+      page: page,
+      data: posts,
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -32,18 +35,24 @@ exports.getAllPosts = async (req, res) => {
 
 // Retorna post ordenados por data de criação mais recente
 exports.getLatestPosts = async (req, res) => {
-  const { p } = req.query;
-  const page = req.query.p || 0;
+  const page = parseInt(req.query.p, 10) || 0;
   const postPerPage = 3;
   try {
+    const totalPosts = await Post.estimatedDocumentCount();
     const posts = await Post.find()
       .sort({ createdAt: -1 })
       .populate('user', 'name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
-    res
-      .status(200)
-      .json({ success: true, results: posts.length, page: page, data: posts });
+    res.status(200).json({
+      success: true,
+      results: posts.length,
+      totalResults: totalPosts,
+      totalPages: Math.round(totalPosts / postPerPage),
+      page: page,
+      nextPage: page + 1,
+      data: posts,
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -51,18 +60,25 @@ exports.getLatestPosts = async (req, res) => {
 
 // Retorna os posts com mais comentários criados recentemente
 exports.getTrendingPosts = async (req, res) => {
-  const page = req.query.p || 0;
+  const page = parseInt(req.query.p, 10) || 0;
   const postPerPage = 3;
   try {
+    const totalPosts = await Post.estimatedDocumentCount();
     const posts = await Post.find()
       .sort({ comments: -1 })
       .sort({ updatedAt: -1 })
       .populate('user', 'name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
-    res
-      .status(200)
-      .json({ success: true, results: posts.length, page: page, data: posts });
+    res.status(200).json({
+      success: true,
+      results: posts.length,
+      totalResults: totalPosts,
+      totalPages: Math.round(totalPosts / postPerPage),
+      page: page,
+      nextPage: page + 1,
+      data: posts,
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
