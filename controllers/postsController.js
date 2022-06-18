@@ -87,9 +87,15 @@ exports.getTrendingPosts = async (req, res) => {
 // get all posts that where description matches search term
 exports.searchPosts = async (req, res) => {
   const { q } = req.query;
-  const page = req.query.p || 0;
+  const page = parseInt(req.query.p, 10) || 0;
   const postPerPage = 3;
   try {
+    const totalPosts = await Post.find({
+      $or: [
+        { description: { $regex: q, $options: 'i' } },
+        { streetName: { $regex: q, $options: 'i' } },
+      ],
+    });
     const posts = await Post.find({
       $or: [
         { description: { $regex: q, $options: 'i' } },
@@ -100,9 +106,15 @@ exports.searchPosts = async (req, res) => {
       .populate('user', 'name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
-    res
-      .status(200)
-      .json({ success: true, results: posts.length, page: page, data: posts });
+    res.status(200).json({
+      success: true,
+      results: posts.length,
+      totalResults: totalPosts.length,
+      totalPages: Math.round(totalPosts.length / postPerPage),
+      page: page,
+      nextPage: page + 1,
+      data: posts,
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
