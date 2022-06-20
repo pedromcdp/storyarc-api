@@ -89,11 +89,12 @@ exports.searchPosts = async (req, res) => {
   const { q } = req.query;
   const page = parseInt(req.query.p, 10) || 0;
   const postPerPage = 3;
+  var regexValue1 = '^' + q;
   try {
     const totalPosts = await Post.find({
-      $or: [
-        { description: { $regex: q, $options: 'i' } },
-        { streetName: { $regex: q, $options: 'i' } },
+      $and: [
+        { description: { $regex: regexValue1, $options: 'i' } },
+        { streetName: { $regex: regexValue1, $options: 'i' } },
       ],
     });
     const posts = await Post.find({
