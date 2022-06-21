@@ -48,7 +48,7 @@ exports.getLatestPosts = async (req, res) => {
       success: true,
       results: posts.length,
       totalResults: totalPosts,
-      totalPages: Math.round(totalPosts / postPerPage),
+      totalPages: Math.ceil(totalPosts / postPerPage),
       page: page,
       nextPage: page + 1,
       data: posts,
@@ -74,7 +74,7 @@ exports.getTrendingPosts = async (req, res) => {
       success: true,
       results: posts.length,
       totalResults: totalPosts,
-      totalPages: Math.round(totalPosts / postPerPage),
+      totalPages: Math.ceil(totalPosts / postPerPage),
       page: page,
       nextPage: page + 1,
       data: posts,
@@ -89,11 +89,12 @@ exports.searchPosts = async (req, res) => {
   const { q } = req.query;
   const page = parseInt(req.query.p, 10) || 0;
   const postPerPage = 3;
+  var regexValue1 = '^' + q;
   try {
     const totalPosts = await Post.find({
-      $or: [
-        { description: { $regex: q, $options: 'i' } },
-        { streetName: { $regex: q, $options: 'i' } },
+      $and: [
+        { description: { $regex: regexValue1, $options: 'i' } },
+        { streetName: { $regex: regexValue1, $options: 'i' } },
       ],
     });
     const posts = await Post.find({
@@ -110,7 +111,7 @@ exports.searchPosts = async (req, res) => {
       success: true,
       results: posts.length,
       totalResults: totalPosts.length,
-      totalPages: Math.round(totalPosts.length / postPerPage),
+      totalPages: Math.ceil(totalPosts.length / postPerPage),
       page: page,
       nextPage: page + 1,
       data: posts,
