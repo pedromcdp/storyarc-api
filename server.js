@@ -5,6 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 const api = require('./controllers/apiController');
 const errorHandling = require('./controllers/errorHandling');
+const corsOptions = require('./utils/corsOptions');
 
 // Definitions
 const app = express();
@@ -20,7 +21,7 @@ mongoose.connect(process.env.DB_CONNECT, () => {
 });
 
 // Middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Default endpoint
