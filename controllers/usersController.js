@@ -40,7 +40,10 @@ exports.getUserPosts = async (req, res) => {
     const userPosts = await Post.find()
       .where('user')
       .equals(req.params.id)
-      .populate('user');
+      .select('description photo user content createdAt')
+      .populate('user', '-_id name avatar')
+      .sort({ createdAt: -1 });
+
     res.status(200).json(userPosts);
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -51,11 +54,17 @@ exports.getUserPosts = async (req, res) => {
 exports.getUserSavedPosts = async (req, res) => {
   try {
     const userSavedPosts = await User.findById(req.params.id)
-      .select('savedPosts')
+      .select('-_id savedPosts')
       .populate({
         path: 'savedPosts',
-        populate: { path: 'user', select: 'name avatar' },
-      });
+        select: 'description photo user content createdAt',
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: 'user',
+          select: '-_id name avatar',
+        },
+      })
+      .sort({ createdAt: -1 });
     res.status(200).json(userSavedPosts);
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
