@@ -142,7 +142,7 @@ exports.getPostComments = async (req, res) => {
   try {
     const comments = await Comment.find()
       .select('user body createdAt')
-      .populate({ path: 'user', select: '-_id name avatar' })
+      .populate({ path: 'user', select: 'name avatar' })
       .where('postId')
       .equals(req.params.id);
     res.status(200).json(comments);
