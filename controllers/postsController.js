@@ -3,8 +3,6 @@
 // Models
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
-// to id util
-const toId = require('../utils/toId');
 ///////////////////////////////////////////////////////
 
 // EXPORTS
@@ -41,7 +39,8 @@ exports.getLatestPosts = async (req, res) => {
     const totalPosts = await Post.estimatedDocumentCount();
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .populate('user', 'name avatar')
+      .select('postType description photo newPhoto user createdAt')
+      .populate('user', '-_id name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
     res.status(200).json({
@@ -67,7 +66,8 @@ exports.getTrendingPosts = async (req, res) => {
     const posts = await Post.find()
       .sort({ comments: -1 })
       .sort({ updatedAt: -1 })
-      .populate('user', 'name avatar')
+      .select('postType description photo newPhoto user createdAt')
+      .populate('user', '-_id name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
     res.status(200).json({
@@ -104,7 +104,8 @@ exports.searchPosts = async (req, res) => {
       ],
     })
       .sort({ createdAt: -1 })
-      .populate('user', 'name avatar')
+      .select('postType description photo newPhoto user createdAt')
+      .populate('user', '-_id name avatar')
       .skip(page * postPerPage)
       .limit(postPerPage);
     res.status(200).json({
@@ -125,14 +126,10 @@ exports.searchPosts = async (req, res) => {
 exports.getPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
+      .select('postType description photo newPhoto user createdAt')
       .populate({
         path: 'user',
-        select: 'name avatar',
-      })
-      .populate({
-        path: 'comments',
-        select: 'user body',
-        populate: { path: 'user', select: 'name avatar' },
+        select: '-_id name avatar',
       });
     res.status(200).json(post);
   } catch (error) {
@@ -145,7 +142,7 @@ exports.getPostComments = async (req, res) => {
   try {
     const comments = await Comment.find()
       .select('user body createdAt')
-      .populate({ path: 'user', select: 'name avatar' })
+      .populate({ path: 'user', select: '-_id name avatar' })
       .where('postId')
       .equals(req.params.id);
     res.status(200).json(comments);
