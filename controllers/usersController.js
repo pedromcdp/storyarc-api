@@ -41,7 +41,7 @@ exports.getUserPosts = async (req, res) => {
       .where('user')
       .equals(req.params.id)
       .select('description photo user content createdAt')
-      .populate('user', '-_id name avatar')
+      .populate('user', 'name avatar')
       .sort({ createdAt: -1 });
 
     res.status(200).json(userPosts);

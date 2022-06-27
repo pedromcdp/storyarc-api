@@ -6,6 +6,8 @@ require('dotenv').config();
 const api = require('./controllers/apiController');
 const errorHandling = require('./controllers/errorHandling');
 const corsOptions = require('./utils/corsOptions');
+const status = require('express-status-monitor');
+const statusOptions = require('./utils/statusOptions');
 
 // Definitions
 const app = express();
@@ -31,6 +33,7 @@ app.get('/', api.welcome);
 app.use('/posts', postsRoute);
 app.use('/users', usersRoute);
 app.use('/comments', commentsRoute);
+app.use(status(statusOptions));
 
 // Middleware if there's no matched endpoint
 app.use(errorHandling.error400);
