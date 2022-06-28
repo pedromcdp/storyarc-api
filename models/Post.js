@@ -42,6 +42,10 @@ const PostSchema = mongoose.Schema(
         { type: mongoose.SchemaTypes.String, ref: 'Users', default: null },
       ],
     },
+    reported: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );

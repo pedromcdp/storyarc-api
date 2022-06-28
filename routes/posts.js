@@ -30,5 +30,7 @@ router.delete('/:id', postsController.deletePost);
 //PUT REQUESTS
 // Atualiza um post especifico
 router.put('/:id', postsController.updatePost);
+// Reporta um post especifico
+router.put('/:id/report', postsController.reportPost);
 
 module.exports = router;

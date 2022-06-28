@@ -261,6 +261,18 @@ exports.updatePost = async (req, res) => {
   }
 };
 
+// Reporta um post
+exports.reportPost = async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  post.reported = true;
+  try {
+    await post.save();
+    res.status(200).json({ success: true, message: 'Post Reported' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // Atualiza um Comentário especifico
 exports.updateComment = async (req, res) => {
   const update = req.body;
