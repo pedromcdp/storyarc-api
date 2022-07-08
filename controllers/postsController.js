@@ -207,12 +207,19 @@ exports.addComment = async (req, res) => {
     user: req.body.user,
     body: req.body.body,
   });
-
   try {
     const savedComment = await newComment.save();
+    const comment = await Comment.findById(savedComment._id)
+      .select('user postId body createdAt')
+      .populate({
+        path: 'user',
+        select: 'name avatar',
+      });
     await post.comments.push(savedComment._id);
     await post.save();
-    res.status(201).json({ success: true, message: 'Comment added' });
+    res
+      .status(201)
+      .json({ success: true, message: 'Comment added', comment: comment });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
