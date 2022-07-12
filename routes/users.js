@@ -16,6 +16,12 @@ router.get('/:id/posts', authCheck, userController.getUserPosts);
 router.get('/:id/savedPosts', authCheck, userController.getUserSavedPosts);
 // Retorna Posts que o user gostou
 router.get('/:id/likedPosts', authCheck, userController.getUserLikedPosts);
+// Retorna Notificações do user
+router.get(
+  '/:id/notifications',
+  authCheck,
+  userController.getUserNotifications,
+);
 
 // POST REQUESTS
 // Adiciona um novo utilizador
@@ -32,6 +38,12 @@ router.post(
 router.post('/:id/like', authCheck, userController.likePost);
 // Tira like de uma publicação
 router.post('/:id/dislike', authCheck, userController.dislikePost);
+// Envia notificação ao user com id especificado
+router.post(
+  '/:id/sendNotification',
+  authCheck,
+  userController.createNotification,
+);
 
 // DELETE REQUESTS
 // Apaga um utilizador

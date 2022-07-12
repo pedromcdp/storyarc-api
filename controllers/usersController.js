@@ -87,16 +87,15 @@ exports.getUserLikedPosts = async (req, res) => {
   }
 };
 
-// get user Notifications
+// Retorna todas as notificações do utilizador
 exports.getUserNotifications = async (req, res) => {
   try {
-    const userNotifications = await User.findById(req.params.id)
-      .select('-_id notifications')
-      .populate({
-        path: 'notifications',
-        select: '_id',
-        options: { sort: { createdAt: -1 } },
-      });
+    const userNotifications = await Notification.find({
+      toUser: req.params.id,
+    })
+      .populate('fromUser', '-_id name avatar')
+      .sort({ createdAt: -1 });
+
     res.status(200).json(userNotifications);
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -179,6 +178,25 @@ exports.dislikePost = async (req, res) => {
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
+};
+
+// Cria Notificação
+exports.createNotification = async (req, res) => {
+  console.log(req.user);
+  console.log(req.params.id);
+  // const notification = new Notification({
+  //   fromUser: req.user._id,
+  //   toUser: req.body.toUser,
+  //   post: req.body.post,
+  //   type: req.body.type,
+  //   read: req.body.read,
+  // });
+  // try {
+  //   const savedNotification = await notification.save();
+  //   res.status(201).json(savedNotification);
+  // } catch (error) {
+  //   res.status(400).json({ success: false, message: error.message });
+  // }
 };
 
 // DELETE REQUESTS
