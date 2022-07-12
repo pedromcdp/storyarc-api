@@ -75,10 +75,10 @@ exports.getUserSavedPosts = async (req, res) => {
 exports.getUserLikedPosts = async (req, res) => {
   try {
     const userLikedPosts = await User.findById(req.params.id)
-      .select('likedPosts')
+      .select('-_id likedPosts')
       .populate({
         path: 'likedPosts',
-        populate: { path: 'user', select: 'name avatar' },
+        select: '_id',
       });
     res.status(200).json(userLikedPosts);
   } catch (error) {

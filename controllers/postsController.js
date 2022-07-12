@@ -193,7 +193,10 @@ exports.createPost = async (req, res) => {
 
   try {
     const savedPost = await post.save();
-    res.status(201).json(savedPost);
+    const CreatedPost = await Post.findById(savedPost._id)
+      .select('postType description photo newPhoto user createdAt')
+      .populate('user', '-_id name avatar');
+    res.status(201).json(CreatedPost);
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
