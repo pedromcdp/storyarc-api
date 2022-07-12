@@ -4,6 +4,7 @@ const toId = require('../utils/toId');
 // Models
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Notification = require('../models/Notification');
 ///////////////////////////////////////////////////////
 
 // EXPORTS
@@ -81,6 +82,22 @@ exports.getUserLikedPosts = async (req, res) => {
         select: '_id',
       });
     res.status(200).json(userLikedPosts);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// get user Notifications
+exports.getUserNotifications = async (req, res) => {
+  try {
+    const userNotifications = await User.findById(req.params.id)
+      .select('-_id notifications')
+      .populate({
+        path: 'notifications',
+        select: '_id',
+        options: { sort: { createdAt: -1 } },
+      });
+    res.status(200).json(userNotifications);
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
