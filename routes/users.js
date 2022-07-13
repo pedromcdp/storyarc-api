@@ -18,9 +18,15 @@ router.get('/:id/savedPosts', authCheck, userController.getUserSavedPosts);
 router.get('/:id/likedPosts', authCheck, userController.getUserLikedPosts);
 // Retorna Notificações do user
 router.get(
-  '/:id/notifications',
+  '/notifications/list',
   authCheck,
   userController.getUserNotifications,
+);
+// Retorna Numero de Notificações do user
+router.get(
+  '/notifications/count',
+  authCheck,
+  userController.getUserNotificationsLength,
 );
 
 // POST REQUESTS
