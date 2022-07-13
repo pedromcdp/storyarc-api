@@ -92,6 +92,9 @@ exports.getUserNotifications = async (req, res) => {
   try {
     const userNotifications = await Notification.find({
       toUser: req.user.uid,
+    }).populate({
+      path: 'fromUser',
+      select: 'name avatar',
     });
     res.status(200).json({ success: true, notifications: userNotifications });
   } catch (error) {
