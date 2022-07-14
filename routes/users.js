@@ -54,6 +54,18 @@ router.post(
 // DELETE REQUESTS
 // Apaga um utilizador
 router.delete('/:id', authCheck, userController.deleteUser);
+// Apaga todas as notificações do user
+router.delete(
+  '/notifications/clear',
+  authCheck,
+  userController.deleteNotifications,
+);
+// apaga notificação se o user der dislike numa publicação
+router.delete(
+  '/notifications/remove/:id',
+  authCheck,
+  userController.deleteNotificationOnDislike,
+);
 
 // PUT REQUESTS
 // Atualiza um utilizador

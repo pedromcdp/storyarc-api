@@ -90,13 +90,26 @@ exports.getUserLikedPosts = async (req, res) => {
 // Retorna todas as notificações do utilizador
 exports.getUserNotifications = async (req, res) => {
   try {
+    const unreadUserNotificationsCount = await Notification.find({
+      toUser: req.user.uid,
+      read: false,
+    }).countDocuments();
     const userNotifications = await Notification.find({
       toUser: req.user.uid,
-    }).populate({
-      path: 'fromUser',
-      select: 'name avatar',
+    })
+      .populate({
+        path: 'fromUser',
+        select: 'name avatar',
+      })
+      .populate({
+        path: 'post',
+        select: 'description',
+      })
+      .sort({ createdAt: -1 });
+    res.status(200).json({
+      unreadCount: unreadUserNotificationsCount,
+      notifications: userNotifications,
     });
-    res.status(200).json({ success: true, notifications: userNotifications });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -216,6 +229,28 @@ exports.deleteUser = async (req, res) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json({ success: true, message: 'User deleted' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// Apaga notificações do user
+exports.deleteNotifications = async (req, res) => {
+  try {
+    await Notification.deleteMany({ toUser: req.user.uid });
+    res.status(200).json({ success: true, message: 'Notification deleted' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+// Delete notifications when user remove like from posts
+exports.deleteNotificationOnDislike = async (req, res) => {
+  try {
+    await Notification.deleteOne({
+      post: req.params.id,
+    });
+    res.status(200).json({ success: true, message: 'Notification deleted' });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
