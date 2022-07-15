@@ -72,5 +72,11 @@ router.delete(
 router.put('/:id', authCheck, userController.updateUser);
 // Cria ou atualiza um utilizador
 router.put('/', userController.createOrUpdateUser);
+// Atualiza o campo read da notificação
+router.put(
+  '/notifications/read',
+  authCheck,
+  userController.markNotificationAsRead,
+);
 
 module.exports = router;

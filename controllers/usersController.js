@@ -295,3 +295,19 @@ exports.createOrUpdateUser = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+// mark all notifications as read
+exports.markNotificationAsRead = async (req, res) => {
+  try {
+    await Notification.updateMany(
+      { toUser: req.user.uid },
+      { read: true },
+      { new: true },
+    );
+    res
+      .status(200)
+      .json({ success: true, message: 'Notification marked as read' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
