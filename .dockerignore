@@ -1,0 +1,7 @@
+node_modules
+coverage
+tests
+Dockerfile
+.git
+.gitignore
+vercel.json
