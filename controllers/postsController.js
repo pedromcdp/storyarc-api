@@ -127,7 +127,7 @@ exports.searchPosts = async (req, res) => {
 exports.getPost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
-      .select('postType description photo newPhoto user createdAt')
+      .select('postType description photo newPhoto contentDate user createdAt')
       .populate({
         path: 'user',
         select: 'name avatar',
