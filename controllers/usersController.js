@@ -66,7 +66,11 @@ exports.getUserSavedPosts = async (req, res) => {
         },
       })
       .sort({ createdAt: -1 });
-    res.status(200).json(userSavedPosts);
+    if (userSavedPosts === null) {
+      res.status(200).json({ savedPosts: [] });
+    } else {
+      res.status(200).json(userSavedPosts);
+    }
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -81,7 +85,11 @@ exports.getUserLikedPosts = async (req, res) => {
         path: 'likedPosts',
         select: '_id',
       });
-    res.status(200).json(userLikedPosts);
+    if (userLikedPosts === null) {
+      res.status(200).json({ likedPosts: [] });
+    } else {
+      res.status(200).json(userLikedPosts);
+    }
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }

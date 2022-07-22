@@ -235,9 +235,11 @@ exports.deletePost = async (req, res) => {
   try {
     await Post.findByIdAndDelete(req.params.id);
     await Comment.deleteMany({ postId: req.params.id });
-    res
-      .status(200)
-      .json({ success: true, message: 'Post & Comments deleted successfully' });
+    await Notification.deleteMany({ post: req.params.id });
+    res.status(200).json({
+      success: true,
+      message: 'Post & Comments & Notifications deleted successfully',
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
