@@ -252,6 +252,15 @@ exports.deleteNotifications = async (req, res) => {
   }
 };
 
+exports.deleteOneNotification = async (req, res) => {
+  try {
+    await Notification.findByIdAndDelete(req.params.id);
+    res.status(200).json({ success: true, message: 'Notification deleted' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 // Delete notifications when user remove like from posts
 exports.deleteNotificationOnDislike = async (req, res) => {
   try {

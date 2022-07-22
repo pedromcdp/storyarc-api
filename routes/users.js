@@ -66,6 +66,11 @@ router.delete(
   authCheck,
   userController.deleteNotificationOnDislike,
 );
+router.delete(
+  '/notifications/:id/delete',
+  authCheck,
+  userController.deleteOneNotification,
+);
 
 // PUT REQUESTS
 // Atualiza um utilizador
